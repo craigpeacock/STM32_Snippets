@@ -4,11 +4,11 @@ This example targets the [NUCLEO-F411RE](https://www.st.com/en/evaluation-tools/
 
 The console uses UART2 (TX PA2, RX PA3) that is redirected to the STLink Virtual Com Port. The baud rate is 115,200.
 
-The UART_DMA component uses UART1 (TX PA9, RX PA10) at 115,200.
+The UART_DMA component uses UART1 (TX PA9, RX PA10) at 115,200 8N1.
 
 ### Sending 
 
-To send data via DMA, the HAL_UART_Transmit_DMA API is used:
+To send data via DMA, the HAL_UART_Transmit_DMA API call is used:
 
 ```
 	if (HAL_UART_Transmit_DMA(&huart1, (uint8_t*)buffer, len) == HAL_OK)
@@ -21,9 +21,9 @@ To send data via DMA, the HAL_UART_Transmit_DMA API is used:
 
 ### Receiving
 
-To being to receive data, the HAL_UARTEx_ReceiveToIdle_DMA is called from main. A buffer of 100 bytes is allocated and used by the API to return the data.
+To being to receive data, the HAL_UARTEx_ReceiveToIdle_DMA is called from main. A buffer of 100 bytes is allocated and used by the API to return the received data.
 
-The ReceiveToIdle call will allow variable length data to be received. A callback will occur upon completion (100 bytes of data received) or an IDLE event. 
+The ReceiveToIdle() call will allow variable length data to be received. A callback will occur upon completion (100 bytes of data received) or an IDLE event. 
 
 ```
 uint8_t buffer[100];
