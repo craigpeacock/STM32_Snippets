@@ -21,14 +21,14 @@ To send data via DMA, the HAL_UART_Transmit_DMA API call is used:
 
 ### Receiving
 
-To being to receive data, the HAL_UARTEx_ReceiveToIdle_DMA is called from main. A buffer of 100 bytes is allocated and used by the API to return the received data.
+To begin to receive data, HAL_UARTEx_ReceiveToIdle_DMA() is called from main. A buffer of 100 bytes is allocated and used by the API to return the received data.
 
 The ReceiveToIdle() call will allow variable length data to be received. A callback will occur upon completion (100 bytes of data received) or an IDLE event. 
 
 ```
 uint8_t buffer[100];
 
-HAL_UARTEx_ReceiveToIdle_DMA(&huart1, buffer, 100);
+HAL_UARTEx_ReceiveToIdle_DMA(&huart1, buffer, sizeof(buffer));
 ```
 
 A callback is then created to handle the interrupt. This can be called upon completion, half completion (50 bytes in this case, half of the allocated 100 byte buffer) or idle. To prevent the buffer being displayed at half completion and repeated at full completion, we obtain the event type and filter out the half completed event.
@@ -41,7 +41,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 	// Filter these requests out so the buffer is not printed twice.
 	if ((EventType == HAL_UART_RXEVENT_IDLE) || (EventType == HAL_UART_RXEVENT_TC)) {
 		printf("Received %hu byte(s): %.*s\r\n", size, size, buffer);
-		HAL_UARTEx_ReceiveToIdle_DMA(huart, buffer, 100);
+		HAL_UARTEx_ReceiveToIdle_DMA(huart, buffer, sizeof(buffer));
 	}
 }
 ```

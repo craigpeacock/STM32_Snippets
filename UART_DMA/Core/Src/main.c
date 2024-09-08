@@ -66,7 +66,7 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 	// Filter these requests out so the buffer is not printed twice.
 	if ((EventType == HAL_UART_RXEVENT_IDLE) || (EventType == HAL_UART_RXEVENT_TC)) {
 		printf("Received %hu byte(s): %.*s\r\n", size, size, buffer);
-		HAL_UARTEx_ReceiveToIdle_DMA(huart, buffer, 100);
+		HAL_UARTEx_ReceiveToIdle_DMA(huart, buffer, sizeof(buffer));
 	}
 }
 
@@ -124,7 +124,7 @@ int main(void)
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
 
-  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, buffer, 100);
+  HAL_UARTEx_ReceiveToIdle_DMA(&huart1, buffer, sizeof(buffer));
 
   while (1)
   {
