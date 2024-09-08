@@ -21,7 +21,7 @@ To send data via Interrupts, the HAL_UART_Transmit_IT API call is used:
 
 ### Receiving
 
-To being to receive data, the HAL_UARTEx_ReceiveToIdle_IT is called from main. A buffer of 100 bytes is allocated and used by the API to return the received data.
+To begin to receive data, HAL_UARTEx_ReceiveToIdle_IT() is called from main. A buffer of 100 bytes is allocated and used by the API to return the received data.
 
 The ReceiveToIdle() call will allow variable length data to be received. A callback will occur upon completion (100 bytes of data received) or an IDLE event. 
 
