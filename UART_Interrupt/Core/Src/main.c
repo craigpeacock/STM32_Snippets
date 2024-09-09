@@ -58,6 +58,14 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart){
+	// Should be called from UART_EndTransmit_IT()
+	if (huart->Instance == USART1) {
+		// Called once Transmit is complete.
+		// Useful for turning off any external drivers - i.e. RS-485
+	}
+}
+
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 {
 	if (huart->Instance == USART1) {
@@ -74,6 +82,9 @@ void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 void UARTSend(char *buffer)
 {
 	uint8_t len = strlen(buffer);
+
+	// Enable Transmit Complete Interrupt, so HAL_UART_TxCpltCallback() works
+	__HAL_UART_ENABLE_IT(&huart1, UART_IT_TC);
 
 	if (HAL_UART_Transmit_IT(&huart1, (uint8_t*)buffer, len) == HAL_OK)
 	{
