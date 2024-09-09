@@ -59,6 +59,13 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef* huart){
+	if (huart->Instance == USART1) {
+		// Called once Transmit is complete.
+		// Useful for turning off any external drivers - i.e. RS-485
+	}
+}
+
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 {
 	if (huart->Instance == USART1) {
