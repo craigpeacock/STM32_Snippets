@@ -60,12 +60,14 @@ void SystemClock_Config(void);
 
 void HAL_UARTEx_RxEventCallback(UART_HandleTypeDef* huart, uint16_t size)
 {
-	HAL_UART_RxEventTypeTypeDef EventType = HAL_UARTEx_GetRxEventType(huart);
-	// This call back will also receive halt transfer events (HAL_UART_RXEVENT_HT).
-	// Filter these requests out so the buffer is not printed twice.
-	if ((EventType == HAL_UART_RXEVENT_IDLE) || (EventType == HAL_UART_RXEVENT_TC)) {
-		printf("Received %hu byte(s): %.*s\r\n", size, size, buffer);
-		HAL_UARTEx_ReceiveToIdle_IT(huart, buffer, sizeof(buffer));
+	if (huart->Instance == USART1) {
+		HAL_UART_RxEventTypeTypeDef EventType = HAL_UARTEx_GetRxEventType(huart);
+		// This call back will also receive halt transfer events (HAL_UART_RXEVENT_HT).
+		// Filter these requests out so the buffer is not printed twice.
+		if ((EventType == HAL_UART_RXEVENT_IDLE) || (EventType == HAL_UART_RXEVENT_TC)) {
+			printf("Received %hu byte(s): %.*s\r\n", size, size, buffer);
+			HAL_UARTEx_ReceiveToIdle_IT(huart, buffer, sizeof(buffer));
+		}
 	}
 }
 
